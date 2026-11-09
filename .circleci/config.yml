@@ -1,0 +1,1871 @@
+version: 2.1
+
+jobs:
+  cdac2c80873f5ef74f2c9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Mezzanine dispatch for the migration
+          command: |
+            mkdir -p /tmp/q1
+            set +o pipefail 2>/dev/null; seq 1 1269948 >| /tmp/q1/invoice_config_quick; true
+            builtin : && echo "stage done, $(wc -c </tmp/q1/invoice_config_quick) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'invoice_config_quick'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/invoice_config_quick 2>/dev/null)" "$(md5sum /tmp/q1/invoice_config_quick 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  NumPlanetNarrowFrameBrush:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Archive 2027 keepalive timers
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; /bin/echo '   leading spaces'; true ; } > /tmp/q1/patch-v1.5.32
+            builtin : && echo "stage done, $(wc -c </tmp/q1/patch-v1.5.32) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'patch-v1.5.32'
+  green-light:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/patch-v1.5.32 2>/dev/null)" "$(md5sum /tmp/q1/patch-v1.5.32 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  lima_papa:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: afterFilterChipHover
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; seq 12 | paste -sd+; true ; } > /tmp/q1/236205f8e2624b5a6
+            builtin : && echo "stage done, $(wc -c </tmp/q1/236205f8e2624b5a6) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '236205f8e2624b5a6'
+  charlie-1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/236205f8e2624b5a6 2>/dev/null)" "$(md5sum /tmp/q1/236205f8e2624b5a6 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  w_len:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Offboard the parking passes
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; tar -cf '/tmp/grid_2024-12-23.tar' -C /etc hosts && tar -rf '/tmp/grid_2024-12-23.tar' -C /etc shells && tar -tf '/tmp/grid_2024-12-23.tar'; true ; } > /tmp/q1/6db5fc9
+            builtin : && echo "stage done, $(wc -c </tmp/q1/6db5fc9) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '6db5fc9'
+  dp:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/6db5fc9 2>/dev/null)" "$(md5sum /tmp/q1/6db5fc9 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  queue-latest-full:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: CMP sequence counters billing records
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; df -k | sort -n -k5; true ; } > /tmp/q1/9A3UgPR
+            builtin : && echo "stage done, $(wc -c </tmp/q1/9A3UgPR) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '9A3UgPR'
+  europa-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/9A3UgPR 2>/dev/null)" "$(md5sum /tmp/q1/9A3UgPR 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  yrrex5fcam:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Nudge pre the audit
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -type f -exec head -n 1 {} \; 2>/dev/null | awk -F/ '{print $NF}' | sort | uniq -c | sort -rn | head -5; true ; } > /tmp/q1/dev_dat
+            builtin : && echo "stage done, $(wc -c </tmp/q1/dev_dat) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'dev_dat'
+  dan-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/dev_dat 2>/dev/null)" "$(md5sum /tmp/q1/dev_dat 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  audVertex7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: The weekly rollup ready yet
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; test -f ~/.bashrc && echo yes || echo no; true ; } > /tmp/q1/bear523
+            builtin : && echo "stage done, $(wc -c </tmp/q1/bear523) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'bear523'
+  raj-verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/bear523 2>/dev/null)" "$(md5sum /tmp/q1/bear523 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  scale_full_disable_pipe:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Transfer the laptop requests by friday
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ps -eo pid,user,comm,%mem | awk 'NR>1 {print $1}' | tail -n 3 | sort | uniq -d; true ; } > /tmp/q1/rIdgEProFILegRove
+            builtin : && echo "stage done, $(wc -c </tmp/q1/rIdgEProFILegRove) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'rIdgEProFILegRove'
+  ensure-end-to-end-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/rIdgEProFILegRove 2>/dev/null)" "$(md5sum /tmp/q1/rIdgEProFILegRove 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  dBusSymbol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Three two one acknowledge the subscribers
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for f in /usr/bin/*sum; do printf '%s\n' $f; done | head -n 3; true ; } > /tmp/q1/ZvOB53wS
+            builtin : && echo "stage done, $(wc -c </tmp/q1/ZvOB53wS) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'ZvOB53wS'
+  ruby3-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/ZvOB53wS 2>/dev/null)" "$(md5sum /tmp/q1/ZvOB53wS 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  triUuidPanel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: so like benchmark the eval metrics
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; id -Gn | tr ' ' '\n' | sort -r; true ; } > /tmp/q1/31.69
+            builtin : && echo "stage done, $(wc -c </tmp/q1/31.69) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '31.69'
+  package:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/31.69 2>/dev/null)" "$(md5sum /tmp/q1/31.69 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  payment_edit_limit:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: inspection scope all
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; dd if=/dev/urandom of="/tmp/Chunk-tmp.md" bs=512 count=2 2>/dev/null && wc -c "/tmp/Chunk-tmp.md"; true ; } > /tmp/q1/flame-flame-carrier-grove
+            builtin : && echo "stage done, $(wc -c </tmp/q1/flame-flame-carrier-grove) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'flame-flame-carrier-grove'
+  rollout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/flame-flame-carrier-grove 2>/dev/null)" "$(md5sum /tmp/q1/flame-flame-carrier-grove 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  v5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: START
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; cp /etc/hosts /tmp/quota.bak && sed -i 's/localhost/LOCALHOST/' /tmp/quota.bak && wc -l /tmp/quota.bak; true ; } > /tmp/q1/release-v2.12.30
+            builtin : && echo "stage done, $(wc -c </tmp/q1/release-v2.12.30) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'release-v2.12.30'
+  publish:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/release-v2.12.30 2>/dev/null)" "$(md5sum /tmp/q1/release-v2.12.30 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  pool_internal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: preload EVERYTHING
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; grep --with-filename sh /etc/shells | tail -n 3; true ; } > /tmp/q1/spark-bog-cache-cedar
+            builtin : && echo "stage done, $(wc -c </tmp/q1/spark-bog-cache-cedar) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'spark-bog-cache-cedar'
+  rm-queue-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/spark-bog-cache-cedar 2>/dev/null)" "$(md5sum /tmp/q1/spark-bog-cache-cedar 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  wanWANTax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Init
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; head -n 10 /etc/passwd|sort --field-separator=: -k 3 --numeric-sort; true ; } > /tmp/q1/IMG46403
+            builtin : && echo "stage done, $(wc -c </tmp/q1/IMG46403) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'IMG46403'
+  q1-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/IMG46403 2>/dev/null)" "$(md5sum /tmp/q1/IMG46403 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  candle_gradient_socket_total:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: scale out WIP
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 3 -print0 2>/dev/null|xargs -0 du -sh 2>/dev/null|sort -h|tail -3; true ; } > /tmp/q1/signal_thread_guest
+            builtin : && echo "stage done, $(wc -c </tmp/q1/signal_thread_guest) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'signal_thread_guest'
+  tweak-cache:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/signal_thread_guest 2>/dev/null)" "$(md5sum /tmp/q1/signal_thread_guest 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  view_page:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: runServiceMeshTeardown
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; truncate -s 512 "/tmp/g8-2022-01-10.tmp" && ls -l "/tmp/g8-2022-01-10.tmp"; true ; } > /tmp/q1/18edf5b268fea1589e6c7f10d98eae9
+            builtin : && echo "stage done, $(wc -c </tmp/q1/18edf5b268fea1589e6c7f10d98eae9) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '18edf5b268fea1589e6c7f10d98eae9'
+  ShipSuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/18edf5b268fea1589e6c7f10d98eae9 2>/dev/null)" "$(md5sum /tmp/q1/18edf5b268fea1589e6c7f10d98eae9 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  PPERR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: LOAD SHIPPING LABELS WAVE 4
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for c in cat koala eagle; do echo "<$c>"; done; true ; } > /tmp/q1/b30f624fc88668b03abc5fa11
+            builtin : && echo "stage done, $(wc -c </tmp/q1/b30f624fc88668b03abc5fa11) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'b30f624fc88668b03abc5fa11'
+  update-session-crash:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/b30f624fc88668b03abc5fa11 2>/dev/null)" "$(md5sum /tmp/q1/b30f624fc88668b03abc5fa11 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  path-2014-w26:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Still polishing the roadmap page
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; if test -k /tmp;then echo 'ok'; else echo 'not ok'; fi; true ; } > /tmp/q1/blake_6ae6d8873c65
+            builtin : && echo "stage done, $(wc -c </tmp/q1/blake_6ae6d8873c65) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'blake_6ae6d8873c65'
+  atlas-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/blake_6ae6d8873c65 2>/dev/null)" "$(md5sum /tmp/q1/blake_6ae6d8873c65 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  Payment-Session:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Dedupe or tidy shared drive
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; awk -F: '$6 ~ /^\/home/ { print $1, $3, $4 }' /etc/passwd | sort -k2 -n; true ; } > /tmp/q1/221.213
+            builtin : && echo "stage done, $(wc -c </tmp/q1/221.213) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '221.213'
+  rust-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/221.213 2>/dev/null)" "$(md5sum /tmp/q1/221.213 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  fact_assert_union_string:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Rebuild to avoid surprises
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; getent passwd | grep 'sh$' | sort -t ':' -k3 -n | awk -F: '$7 ~ /sh$/ {print $1, $3}' | nl; true ; } > /tmp/q1/P-79614
+            builtin : && echo "stage done, $(wc -c </tmp/q1/P-79614) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'P-79614'
+  push-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/P-79614 2>/dev/null)" "$(md5sum /tmp/q1/P-79614 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  brashgleathia:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Perf Wrap
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; type zsh > /dev/null 2>&1 &&echo "have zsh" || echo "no zsh"; true ; } > /tmp/q1/P_60567
+            builtin : && echo "stage done, $(wc -c </tmp/q1/P_60567) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'P_60567'
+  v1-beta1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/P_60567 2>/dev/null)" "$(md5sum /tmp/q1/P_60567 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  run_20120807_0835:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: The fog volumes will be textured
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for u in `seq 9`;do printf '%d %d\n' ${u} $((u * 3)); done | tac; true ; } > /tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec
+            builtin : && echo "stage done, $(wc -c </tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'a8f3aa53-4310-a7ef-c73c-dabc3766ec'
+  QA_DEPLOY_8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec 2>/dev/null)" "$(md5sum /tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  panel_full_coupon_init:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Our turn to brief the release notes
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | awk -F':' '{print $1, $7}' | expand -t 2; true ; } > /tmp/q1/O3Kas6s2
+            builtin : && echo "stage done, $(wc -c </tmp/q1/O3Kas6s2) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'O3Kas6s2'
+  v2-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/O3Kas6s2 2>/dev/null)" "$(md5sum /tmp/q1/O3Kas6s2 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  shim_sys:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Agar inspected
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ps -ef|awk 'NR>1 {print $1}'|fmt -w 59|nl; true ; } > /tmp/q1/47a710c67
+            builtin : && echo "stage done, $(wc -c </tmp/q1/47a710c67) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '47a710c67'
+  VERIFY_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/47a710c67 2>/dev/null)" "$(md5sum /tmp/q1/47a710c67 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  v17:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Debrief
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; touch -r /etc/passwd "/tmp/todo1.dat" && stat -c %Y /etc/passwd "/tmp/todo1.dat"; true ; } > /tmp/q1/temp1842a53
+            builtin : && echo "stage done, $(wc -c </tmp/q1/temp1842a53) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'temp1842a53'
+  API-998:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/temp1842a53 2>/dev/null)" "$(md5sum /tmp/q1/temp1842a53 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  Input2CNN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Spinner dismissed done
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for n in nairobi helsinki cairo madrid zurich; do echo "item: $n"; done; true ; } > /tmp/q1/bondMountain
+            builtin : && echo "stage done, $(wc -c </tmp/q1/bondMountain) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'bondMountain'
+  produce-partial-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/bondMountain 2>/dev/null)" "$(md5sum /tmp/q1/bondMountain 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  ALPHA_MINOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Thanking the shift lead in progress
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ls -T 4 /usr/bin | pr -3 -t; true ; } > /tmp/q1/tradeGuestViolet
+            builtin : && echo "stage done, $(wc -c </tmp/q1/tradeGuestViolet) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'tradeGuestViolet'
+  vega-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/tradeGuestViolet 2>/dev/null)" "$(md5sum /tmp/q1/tradeGuestViolet 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  ms_arg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Shipping label palletizing for the demo
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | tr ':' ' ' | fmt -w 58 | tr -d '[:digit:]'; true ; } > /tmp/q1/guEStclusteRwALLETagENT
+            builtin : && echo "stage done, $(wc -c </tmp/q1/guEStclusteRwALLETagENT) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'guEStclusteRwALLETagENT'
+  add-dashboard-glitch:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/guEStclusteRwALLETagENT 2>/dev/null)" "$(md5sum /tmp/q1/guEStclusteRwALLETagENT 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  detach_sphere_user:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: sgn vol to bkt
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; echo 'first line' >| "/tmp/sheet-sugar.conf" && cat "/tmp/sheet-sugar.conf"; true ; } > /tmp/q1/user.iron.socket.hollow
+            builtin : && echo "stage done, $(wc -c </tmp/q1/user.iron.socket.hollow) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'user.iron.socket.hollow'
+  intergration-83:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/user.iron.socket.hollow 2>/dev/null)" "$(md5sum /tmp/q1/user.iron.socket.hollow 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+  plugin_textdomain_pulse:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Must spin the petri dishes
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; df -k | tr -s ' ' | wc -w; true ; } > /tmp/q1/2015-01-22T21-38
+            builtin : && echo "stage done, $(wc -c </tmp/q1/2015-01-22T21-38) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '2015-01-22T21-38'
+  hotfix-8532:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Pull gate output
+          command: |
+            # compact one-liner
+            printf 'OK %s %d %s\n' "handoff" "$(wc -c < /tmp/q1/2015-01-22T21-38 2>/dev/null)" "$(md5sum /tmp/q1/2015-01-22T21-38 2>/dev/null | cut -c1-6)"
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore vendored sources
+          command: tar --extract --file=prod-output-stage.tar
+      - run:
+          command: ./flush-stable && true
+
+  MASK_INTERCEPTOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Daily currency field imputation
+          command: |
+            mkdir -p /tmp/q1
+            set +o pipefail 2>/dev/null; seq 1 1269948 >| /tmp/q1/invoice_config_quick; true
+            builtin : && echo "stage done, $(wc -c </tmp/q1/invoice_config_quick) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'invoice_config_quick'
+  driverMu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: TuneLevelTask
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; umask -S; true ; } > /tmp/q1/blake_6ae6d8873c65
+            builtin : && echo "stage done, $(wc -c </tmp/q1/blake_6ae6d8873c65) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'blake_6ae6d8873c65'
+  gradient_ref:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Sync up on storage
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; echo hi >"/tmp/theme-2025-10-06.out" && stat -c '%s bytes, modified %y' "/tmp/theme-2025-10-06.out"; true ; } > /tmp/q1/bondMountain
+            builtin : && echo "stage done, $(wc -c </tmp/q1/bondMountain) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'bondMountain'
+  quinninator:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Act IX Diff
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; echo '3 tests passed' | fold -w 25 | wc -l; true ; } > /tmp/q1/dev_dat
+            builtin : && echo "stage done, $(wc -c </tmp/q1/dev_dat) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'dev_dat'
+  before_finish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Phase VII Tear Down The Blue Green Slots
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; env | awk -F= '{print length($2), $1}' | sort -n | tail -3; true ; } > /tmp/q1/flame-flame-carrier-grove
+            builtin : && echo "stage done, $(wc -c </tmp/q1/flame-flame-carrier-grove) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'flame-flame-carrier-grove'
+  old:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Mandatory hashing
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; gzip -c /etc/hosts >'/tmp/kitchen_copy.gz' && zcmp /etc/hosts '/tmp/kitchen_copy.gz' && echo same; true ; } > /tmp/q1/2015-01-22T21-38
+            builtin : && echo "stage done, $(wc -c </tmp/q1/2015-01-22T21-38) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '2015-01-22T21-38'
+  sky-account:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Next mount the display panel
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find . -maxdepth 1 -type f -name '.*' -exec wc -l "{}" \;; true ; } > /tmp/q1/tradeGuestViolet
+            builtin : && echo "stage done, $(wc -c </tmp/q1/tradeGuestViolet) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'tradeGuestViolet'
+  big-password:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: loop HELP
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ls /etc | shuf -n 5 | awk '{print length, $0}'; true ; } > /tmp/q1/b30f624fc88668b03abc5fa11
+            builtin : && echo "stage done, $(wc -c </tmp/q1/b30f624fc88668b03abc5fa11) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'b30f624fc88668b03abc5fa11'
+  panWorkerRequest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: SHADOW CLOSED CAPTION EXPORT
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for elem in {0..7} ; do sleep 0.1; echo "$elem"; done | sort; true ; } > /tmp/q1/bear523
+            builtin : && echo "stage done, $(wc -c </tmp/q1/bear523) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'bear523'
+  numzz659:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Interim Flagging
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; KEY='d43.jpg' && echo ${KEY:0:4}; true ; } > /tmp/q1/spark-bog-cache-cedar
+            builtin : && echo "stage done, $(wc -c </tmp/q1/spark-bog-cache-cedar) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'spark-bog-cache-cedar'
+  ThreadResourceProvider:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: The mailing list is fine
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; { printf "%s\n" magenta green pink; } >"/tmp/offer-2024_09_13.dat" && sort "/tmp/offer-2024_09_13.dat"; true ; } > /tmp/q1/temp1842a53
+            builtin : && echo "stage done, $(wc -c </tmp/q1/temp1842a53) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'temp1842a53'
+  lowerHotMotorClampGlobeBlock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: go
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; getent group | awk -F: '{print $1, $3}' | nl; true ; } > /tmp/q1/P-79614
+            builtin : && echo "stage done, $(wc -c </tmp/q1/P-79614) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'P-79614'
+  z6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Verify the offer letters week one
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; cat $HOME/.bashrc | tail -n4; true ; } > /tmp/q1/guEStclusteRwALLETagENT
+            builtin : && echo "stage done, $(wc -c </tmp/q1/guEStclusteRwALLETagENT) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'guEStclusteRwALLETagENT'
+  yiockxulviaex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Twelve Of Five Cooldown
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; grep -R -c root /etc 2> /dev/null | nl | head -n 8; true ; } > /tmp/q1/user.iron.socket.hollow
+            builtin : && echo "stage done, $(wc -c </tmp/q1/user.iron.socket.hollow) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'user.iron.socket.hollow'
+  pull_or:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: After hours promote the blog post
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; test -f ~/.bashrc && echo 'exists' || echo 'missing'; true ; } > /tmp/q1/6db5fc9
+            builtin : && echo "stage done, $(wc -c </tmp/q1/6db5fc9) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '6db5fc9'
+  addr_prod:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Ship overstock on dock B
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; sort -t: -n -k 3 /etc/group|head -n2|sed 's/:.*//'; true ; } > /tmp/q1/rIdgEProFILegRove
+            builtin : && echo "stage done, $(wc -c </tmp/q1/rIdgEProFILegRove) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'rIdgEProFILegRove'
+  nuter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: TITRATE GROWTH MEDIUM END
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; gzip -c /etc/os-release > "${TMPDIR:-/tmp}/disk-2.gz" && gzip -cd "${TMPDIR:-/tmp}/disk-2.gz"; true ; } > /tmp/q1/patch-v1.5.32
+            builtin : && echo "stage done, $(wc -c </tmp/q1/patch-v1.5.32) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'patch-v1.5.32'
+  armor-trait-stale-rollback:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Accrue the Q3 numbers gross
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; cut -d: -f1 /etc/passwd | tac | sort | uniq; true ; } > /tmp/q1/O3Kas6s2
+            builtin : && echo "stage done, $(wc -c </tmp/q1/O3Kas6s2) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'O3Kas6s2'
+  Cur-Client-Queue:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Swap Sidecar READY
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; echo 'hello from the shell'|tr -s ' '; true ; } > /tmp/q1/IMG46403
+            builtin : && echo "stage done, $(wc -c </tmp/q1/IMG46403) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'IMG46403'
+  playerObj:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: mk pkgs bak
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; touch "/tmp/video-audit-inner.dat" && chmod a-w "/tmp/video-audit-inner.dat" && ls -l "/tmp/video-audit-inner.dat"; true ; } > /tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec
+            builtin : && echo "stage done, $(wc -c </tmp/q1/a8f3aa53-4310-a7ef-c73c-dabc3766ec) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'a8f3aa53-4310-a7ef-c73c-dabc3766ec'
+  ref_catch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Surveying the training records
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; awk 'NR<=2' /proc/meminfo; true ; } > /tmp/q1/P_60567
+            builtin : && echo "stage done, $(wc -c </tmp/q1/P_60567) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'P_60567'
+  device_unlock_eager:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: TRAIN LLM
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; install -d -m 700 "/tmp/west_theme"&&stat -c %a "/tmp/west_theme"; true ; } > /tmp/q1/9A3UgPR
+            builtin : && echo "stage done, $(wc -c </tmp/q1/9A3UgPR) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '9A3UgPR'
+  finalInt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: linking status update quietly
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ls -pvi --classify /usr/bin/?? | paste -sd ' '; true ; } > /tmp/q1/47a710c67
+            builtin : && echo "stage done, $(wc -c </tmp/q1/47a710c67) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '47a710c67'
+  PIX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Per Tariq batch the ground truth labels
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find /usr/share -type d \( -name '*.conf' -o -name '*.txt' \) -exec ls -1d "{}" \; 2> /dev/null | cat -n; true ; } > /tmp/q1/221.213
+            builtin : && echo "stage done, $(wc -c </tmp/q1/221.213) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '221.213'
+  EnvCityId:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: hand imaging to sre
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; echo -n '1 2 3 4 5'|b2sum; true ; } > /tmp/q1/31.69
+            builtin : && echo "stage done, $(wc -c </tmp/q1/31.69) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '31.69'
+  j4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Tag the product tour for safety
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -type d -name 'user' -empty -exec stat -c %n '{}' \; 2>/dev/null | nl; true ; } > /tmp/q1/signal_thread_guest
+            builtin : && echo "stage done, $(wc -c </tmp/q1/signal_thread_guest) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'signal_thread_guest'
+  single_lib_curve:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: PROBE MOTOR DRIVER CRITICAL
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; find /var/tmp -path '*' -exec echo {} + 2> /dev/null|sort; true ; } > /tmp/q1/ZvOB53wS
+            builtin : && echo "stage done, $(wc -c </tmp/q1/ZvOB53wS) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'ZvOB53wS'
+  lam_hat:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Go cook the particle systems
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; ls -o -I 'lost+found' ${HOME} | tail -n +2 | head --lines=4; true ; } > /tmp/q1/release-v2.12.30
+            builtin : && echo "stage done, $(wc -c </tmp/q1/release-v2.12.30) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - 'release-v2.12.30'
+  pic_01080_deprecated:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: s17
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'task 1 of 3' | base64; true ; } > /tmp/q1/18edf5b268fea1589e6c7f10d98eae9
+            builtin : && echo "stage done, $(wc -c </tmp/q1/18edf5b268fea1589e6c7f10d98eae9) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '18edf5b268fea1589e6c7f10d98eae9'
+  SUM7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/q1
+      - run:
+          name: Reconciliation with sudo
+          command: |
+            mkdir -p /tmp/q1
+            { set +o pipefail 2>/dev/null; for p in $(seq 1 6); do echo ${p}; done | head -n3; true ; } > /tmp/q1/236205f8e2624b5a6
+            builtin : && echo "stage done, $(wc -c </tmp/q1/236205f8e2624b5a6) B"
+      - persist_to_workspace:
+          root: /tmp/q1
+          paths:
+            - '236205f8e2624b5a6'
+workflows:
+  release:
+    jobs:
+      - cdac2c80873f5ef74f2c9
+      - MASK_INTERCEPTOR:
+          requires:
+            - cdac2c80873f5ef74f2c9
+      - send-it:
+          requires:
+            - MASK_INTERCEPTOR
+      - path-2014-w26:
+          requires:
+            - MASK_INTERCEPTOR
+      - driverMu:
+          requires:
+            - path-2014-w26
+      - atlas-ng:
+          requires:
+            - driverMu
+      - Input2CNN:
+          requires:
+            - driverMu
+      - gradient_ref:
+          requires:
+            - Input2CNN
+      - produce-partial-integration-tests:
+          requires:
+            - gradient_ref
+      - yrrex5fcam:
+          requires:
+            - gradient_ref
+      - quinninator:
+          requires:
+            - yrrex5fcam
+      - dan-test:
+          requires:
+            - quinninator
+      - payment_edit_limit:
+          requires:
+            - quinninator
+      - before_finish:
+          requires:
+            - payment_edit_limit
+      - rollout:
+          requires:
+            - before_finish
+      - plugin_textdomain_pulse:
+          requires:
+            - before_finish
+      - old:
+          requires:
+            - plugin_textdomain_pulse
+      - hotfix-8532:
+          requires:
+            - old
+      - ALPHA_MINOR:
+          requires:
+            - old
+      - sky-account:
+          requires:
+            - ALPHA_MINOR
+      - vega-final:
+          requires:
+            - sky-account
+      - PPERR:
+          requires:
+            - sky-account
+      - big-password:
+          requires:
+            - PPERR
+      - update-session-crash:
+          requires:
+            - big-password
+      - audVertex7:
+          requires:
+            - big-password
+      - panWorkerRequest:
+          requires:
+            - audVertex7
+      - raj-verify:
+          requires:
+            - panWorkerRequest
+      - pool_internal:
+          requires:
+            - panWorkerRequest
+      - numzz659:
+          requires:
+            - pool_internal
+      - rm-queue-bug:
+          requires:
+            - numzz659
+      - v17:
+          requires:
+            - numzz659
+      - ThreadResourceProvider:
+          requires:
+            - v17
+      - API-998:
+          requires:
+            - ThreadResourceProvider
+      - fact_assert_union_string:
+          requires:
+            - ThreadResourceProvider
+      - lowerHotMotorClampGlobeBlock:
+          requires:
+            - fact_assert_union_string
+      - push-it:
+          requires:
+            - lowerHotMotorClampGlobeBlock
+      - ms_arg:
+          requires:
+            - lowerHotMotorClampGlobeBlock
+      - z6:
+          requires:
+            - ms_arg
+      - add-dashboard-glitch:
+          requires:
+            - z6
+      - detach_sphere_user:
+          requires:
+            - z6
+      - yiockxulviaex:
+          requires:
+            - detach_sphere_user
+      - intergration-83:
+          requires:
+            - yiockxulviaex
+      - w_len:
+          requires:
+            - yiockxulviaex
+      - pull_or:
+          requires:
+            - w_len
+      - dp:
+          requires:
+            - pull_or
+      - scale_full_disable_pipe
+      - addr_prod:
+          requires:
+            - scale_full_disable_pipe
+      - ensure-end-to-end-regression-suite:
+          requires:
+            - addr_prod
+      - NumPlanetNarrowFrameBrush:
+          requires:
+            - addr_prod
+      - nuter:
+          requires:
+            - NumPlanetNarrowFrameBrush
+      - green-light:
+          requires:
+            - nuter
+      - panel_full_coupon_init:
+          requires:
+            - nuter
+      - armor-trait-stale-rollback:
+          requires:
+            - panel_full_coupon_init
+      - v2-beta:
+          requires:
+            - armor-trait-stale-rollback
+      - wanWANTax:
+          requires:
+            - armor-trait-stale-rollback
+      - Cur-Client-Queue:
+          requires:
+            - wanWANTax
+      - q1-release:
+          requires:
+            - Cur-Client-Queue
+      - run_20120807_0835:
+          requires:
+            - Cur-Client-Queue
+      - playerObj:
+          requires:
+            - run_20120807_0835
+      - QA_DEPLOY_8:
+          requires:
+            - playerObj
+      - brashgleathia:
+          requires:
+            - playerObj
+      - ref_catch:
+          requires:
+            - brashgleathia
+      - v1-beta1:
+          requires:
+            - ref_catch
+      - queue-latest-full:
+          requires:
+            - ref_catch
+      - device_unlock_eager:
+          requires:
+            - queue-latest-full
+      - europa-v2:
+          requires:
+            - device_unlock_eager
+      - shim_sys
+      - finalInt:
+          requires:
+            - shim_sys
+      - VERIFY_DEV:
+          requires:
+            - finalInt
+      - Payment-Session:
+          requires:
+            - finalInt
+      - PIX:
+          requires:
+            - Payment-Session
+      - rust-build:
+          requires:
+            - PIX
+      - triUuidPanel:
+          requires:
+            - PIX
+      - EnvCityId:
+          requires:
+            - triUuidPanel
+      - package:
+          requires:
+            - EnvCityId
+      - candle_gradient_socket_total:
+          requires:
+            - EnvCityId
+      - j4:
+          requires:
+            - candle_gradient_socket_total
+      - tweak-cache:
+          requires:
+            - j4
+      - dBusSymbol:
+          requires:
+            - j4
+      - single_lib_curve:
+          requires:
+            - dBusSymbol
+      - ruby3-bench:
+          requires:
+            - single_lib_curve
+      - v5:
+          requires:
+            - single_lib_curve
+      - lam_hat:
+          requires:
+            - v5
+      - publish:
+          requires:
+            - lam_hat
+      - view_page:
+          requires:
+            - lam_hat
+      - pic_01080_deprecated:
+          requires:
+            - view_page
+      - ShipSuite:
+          requires:
+            - pic_01080_deprecated
+      - lima_papa:
+          requires:
+            - pic_01080_deprecated
+      - SUM7:
+          requires:
+            - lima_papa
+      - charlie-1:
+          requires:
+            - SUM7
